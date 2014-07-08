@@ -1,11 +1,13 @@
 var fs = require('fs');
+var path = require('path');
+//var tilde = require('tilde-expansion');
 
-var leaderboard = './leaderboard.txt';
+var leaderboard = '/tmp/time-cat.txt';
 
 module.exports = {
   save: function (name, score, time, next) {
     var line = name + ',' + score + ',' + time + '\n';
-    fs.appendFile('./leaderboard.txt', line, next);
+    fs.appendFile(leaderboard, line, next);
   },
   get: function (next) {
     var file = fs.createReadStream(leaderboard, {encoding: 'utf8'});

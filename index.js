@@ -6,7 +6,14 @@ var start = process.hrtime();
 var colors = require('colors');
 var leaderboard = require('./leaderboard');
 var party = require('./party');
-var userName = process.argv[2];
+var userName, showall;
+if (process.argv[0] == 'node') {
+  userName = process.argv[2];
+  showall = process.argv[3] == 'all';
+} else {
+  userName = process.argv[1];
+  showall = process.argv[2] == 'all';
+}
 
 function displayTime (time) {
   var str = time + 's';
