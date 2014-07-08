@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var start = process.hrtime();
 // Hurry up and start the timer!
 
