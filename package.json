@@ -1,10 +1,25 @@
 {
   "name": "time-cat",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "It'll only take a second!",
+  "keywords": [
+    "timecat",
+    "time",
+    "cat",
+    "terminal",
+    "game",
+    "oaklandjs",
+    "maxogden",
+    "magicalbeard"
+  ],
   "main": "index.js",
+  "preferGlobal": true,
   "bin": {
     "time-cat": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/brianshaler/time-cat.git"
   },
   "author": "Brian Shaler",
   "license": "ISC",
