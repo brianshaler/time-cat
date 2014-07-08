@@ -6,14 +6,15 @@ var start = process.hrtime();
 var colors = require('colors');
 var leaderboard = require('./leaderboard');
 var party = require('./party');
-var userName, showall;
+var userName;
 if (process.argv[0] == 'node') {
   userName = process.argv[2];
-  showall = process.argv[3] == 'all';
 } else {
   userName = process.argv[1];
-  showall = process.argv[2] == 'all';
 }
+var showAll = process.argv.indexOf('all') != -1;
+var showUnique = process.argv.indexOf('unique') != -1;
+var showAverage = process.argv.indexOf('average') != -1;
 
 function displayTime (time) {
   var str = time + 's';
@@ -75,7 +76,7 @@ messages.forEach(function (message) {
 if (userName && userName == 'leaderboard') {
   leaderboard.get(function (err, entries) {
     if (err) { throw err; }
-    if (process.argv[3] != 'all') {
+    if (!showAll) {
       entries = entries.filter(function (entry) {
         return entry.score < 1;
       });
@@ -83,10 +84,41 @@ if (userName && userName == 'leaderboard') {
     entries.sort(function (a, b) {
       return Math.abs(a.score-1) < Math.abs(b.score-1) ? -1 : 1;
     });
-    var maxEntries = 7;
-    if (entries.length > maxEntries) {
-      entries.splice(maxEntries, entries.length - maxEntries);
+    
+    if (showAverage) {
+      var byName = entries.reduce(function (memo, entry) {
+        if (!memo[entry.name]) {
+          memo[entry.name] = [0, 0, []];
+        }
+        if (entry.score < 2) {
+          memo[entry.name][0]++;
+          memo[entry.name][1] += Math.abs(entry.score - 1);
+          memo[entry.name][2].push(entry.score);
+        }
+        return memo;
+      }, {});
+      var averages = {};
+      for (var name in byName) {
+        averages[name] = byName[name][1] / byName[name][0];
+        if (!showAll) {
+          averages[name] = 1 - averages[name];
+        }
+      }
     }
+    
+    var maxEntries = 10;
+    var filteredEntries = [];
+    var names = [];
+    for (var i=0; filteredEntries.length < 10 && i<entries.length; i++) {
+      if (showUnique) {
+        if (names.indexOf(entries[i].name) != -1) {
+          continue;
+        }
+        names.push(entries[i].name);
+      }
+      filteredEntries.push(entries[i]);
+    }
+    entries = filteredEntries;
     var longestName = 1;
     entries.forEach(function (entry) {
       longestName = longestName > entry.name.length ? longestName : entry.name.length;
@@ -100,7 +132,11 @@ if (userName && userName == 'leaderboard') {
       while (name.length + whitespace.length < longestName) {
         whitespace += ' ';
       }
-      console.log(name + ':  ' + whitespace + entry.score);
+      var line = name + ':  ' + whitespace + entry.score;
+      if (showAverage) {
+        line += ' (' + (showAll ? '±' : '') + Math.round(averages[name]*1000)/1000 + ')';
+      }
+      console.log(line);
     });
     console.log('============================\n');
     process.exit();
