@@ -2,7 +2,7 @@
 
 ### Install
 
-    npm install time-cat
+    npm install -g time-cat
 
 ### Run
 
@@ -10,4 +10,4 @@
 
 ### Play
 
-Start time-cat and then ctrl+c after exactly one second.
+Start `time-cat` and then `ctrl+c` after exactly one second.
