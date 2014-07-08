@@ -1,6 +1,6 @@
 {
   "name": "time-cat",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "It'll only take a second!",
   "main": "index.js",
   "bin": {
