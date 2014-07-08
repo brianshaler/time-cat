@@ -1,0 +1,14 @@
+{
+  "name": "time-cat",
+  "version": "0.0.1",
+  "description": "It'll only take a second!",
+  "main": "index.js",
+  "bin": {
+    "time-cat": "./index.js"
+  },
+  "author": "Brian Shaler",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "~0.6.2"
+  }
+}
