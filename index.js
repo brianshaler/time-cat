@@ -27,6 +27,11 @@ function displayTime (time) {
   console.log('\n\n' + str);
 }
 
+process.stdin.on('end', function() {
+  process.kill(process.pid, 'SIGINT');
+});
+process.stdin.resume();
+
 process.on('SIGINT', function () {
   var hrtime = process.hrtime(start);
   var time = hrtime[0] + hrtime[1] / 1000000000;
@@ -84,7 +89,7 @@ if (userName && userName == 'leaderboard') {
     entries.sort(function (a, b) {
       return Math.abs(a.score-1) < Math.abs(b.score-1) ? -1 : 1;
     });
-    
+
     if (showAverage) {
       var byName = entries.reduce(function (memo, entry) {
         if (!memo[entry.name]) {
@@ -105,7 +110,7 @@ if (userName && userName == 'leaderboard') {
         }
       }
     }
-    
+
     var maxEntries = 10;
     var filteredEntries = [];
     var names = [];
@@ -123,7 +128,7 @@ if (userName && userName == 'leaderboard') {
     entries.forEach(function (entry) {
       longestName = longestName > entry.name.length ? longestName : entry.name.length;
     });
-    
+
     console.log('\nTop scores:');
     console.log('============================');
     entries.forEach(function (entry) {
